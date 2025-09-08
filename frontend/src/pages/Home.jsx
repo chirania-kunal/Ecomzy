@@ -144,9 +144,9 @@ const Home = () => {
         {loading ? (
           <Spinner />
         ) : products.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full p-2 mx-auto space-y-10 space-x-5 min-h-[80vh]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full p-2 mx-auto space-y-10 space-x-5 ">
             {products.map((product) => (
-              <Product key={product._id} post={product} />
+              <Product key={product._id} post={product}   />
             ))}
           </div>
         ) : (

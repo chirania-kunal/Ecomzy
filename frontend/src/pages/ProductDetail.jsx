@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { FaHeart, FaShoppingCart, FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { add } from '../redux/Slices/CartSlice';
 import apiService from '../services/api';
+import { getProduct } from '../services/operations/productApi';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -26,15 +27,16 @@ const ProductDetail = () => {
   }, [id]);
 
   const fetchProduct = async () => {
-    try {
-      const response = await apiService.getProduct(id);
-      setProduct(response.data);
-    } catch (error) {
-      toast.error('Failed to load product');
-      navigate('/');
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   const response = await apiService.getProduct(id);
+    //   setProduct(response.data);
+    // } catch (error) {
+    //   toast.error('Failed to load product');
+    //   navigate('/');
+    // } finally {
+    // }
+    await getProduct(id,setProduct,navigate)
+    setLoading(false);
   };
 
   const checkWishlistStatus = async () => {
@@ -155,7 +157,7 @@ const ProductDetail = () => {
                 <img
                   src={product.images[selectedImage]?.url || product.image}
                   alt={product.title}
-                  className="w-full h-96 object-cover rounded-lg"
+                  className="w-full h-98 object-cover rounded-lg"
                 />
               </div>
               {product.images && product.images.length > 1 && (

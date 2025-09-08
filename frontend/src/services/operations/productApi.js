@@ -7,7 +7,7 @@ import { endpoints, productEndpoints } from "../api2"
 
 const {
     PRODUCT_CATEGORIES_API,
-    GET_PRODUCT_FILTER_API,
+    GET_PRODUCTS_API,
 } = productEndpoints
 
 // export function getProductCategories(){
@@ -40,12 +40,11 @@ export const getProducts = async (params = {},setProducts) => {
     try {
       console.log('jjjhdg');
       const queryString = new URLSearchParams(params).toString();
-     const endpoint = `${GET_PRODUCT_FILTER_API}${queryString ? `?${queryString}` : ''}`;
+     const endpoint = `${GET_PRODUCTS_API}${queryString ? `?${queryString}` : ''}`;
      console.log('endpoint',endpoint)
       const response = await apiConnector("GET",endpoint);
       console.log("PRODUCT API RESPONSE............", response)
       if (response.data.success) {
-        console.log(response.data.data);
         setProducts(response.data.data);
       }
     } catch (error) {
@@ -54,5 +53,18 @@ export const getProducts = async (params = {},setProducts) => {
       setProducts([]);
     }
   
+}
+
+export const getProduct = async(id,setProduct,navigate)=>{
+    try {
+      const endpoint = `${GET_PRODUCTS_API}/${id}`
+      console.log(endpoint);
+      const response = await apiConnector("GET",endpoint);
+      console.log(response.data.data)
+      setProduct(response.data.data);
+    } catch (error) {
+      toast.error('Failed to load product');
+      navigate('/');
+    } 
 }
 

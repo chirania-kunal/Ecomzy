@@ -1,5 +1,5 @@
 const User = require('../models/User');
-
+const {validationResult} = require('express-validator')
 exports.getProfile= async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
@@ -22,11 +22,13 @@ exports.updateProfile=async (req, res, next) => {
       });
     }
 
+
     const fieldsToUpdate = {
       name: req.body.name,
       phone: req.body.phone,
       address: req.body.address
     };
+
 
     // Remove undefined fields
     Object.keys(fieldsToUpdate).forEach(key => 

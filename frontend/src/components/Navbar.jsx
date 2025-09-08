@@ -8,6 +8,7 @@ import { remove } from '../redux/Slices/CartSlice';
 import apiService from '../services/api';
 import { toast } from 'react-toastify';
 import { logout } from '../services/operations/authApi';
+import { getWishlistCount } from '../services/operations/wishlistApi';
 
 const Navbar = () => {
   const { cart } = useSelector((state) => state.cart);
@@ -31,14 +32,7 @@ const Navbar = () => {
   }, []);
 
   const fetchWishlistCount = async () => {
-    try {
-      const response = await apiService.getWishlistCount();
-      if (response.success) {
-        setWishlistCount(response.count);
-      }
-    } catch (error) {
-      console.error('Error fetching wishlist count:', error);
-    }
+    await getWishlistCount(setWishlistCount,token);
   };
 
   const handleLogout = async () => {

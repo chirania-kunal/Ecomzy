@@ -1,29 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaHeart, FaShoppingCart, FaTrash, FaStar } from 'react-icons/fa';
 import { add } from '../redux/Slices/CartSlice';
 import apiService from '../services/api';
+import { getWishlist } from '../services/operations/wishlistApi';
 
 const Wishlist = () => {
   const dispatch = useDispatch();
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const {token} = useSelector((state)=>state.auth);
 
   useEffect(() => {
     fetchWishlist();
   }, []);
 
   const fetchWishlist = async () => {
-    try {
-      const response = await apiService.getWishlist();
-      setWishlist(response.data.products || []);
-    } catch (error) {
-      toast.error('Failed to load wishlist');
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    await getWishlist(setWishlist,token);
+    console.log("wishlist",wishlist);
+    setLoading(false);
   };
 
   const handleRemoveFromWishlist = async (productId) => {
@@ -43,10 +41,10 @@ const Wishlist = () => {
     }
 
     dispatch(add({
-      id: product._id,
-      title: product.title,
-      price: product.discountedPrice || product.price,
-      image: product.images[0]?.url || product.image,
+      id: product.product._id,
+      title: product.product.title,
+      price: product.product.discountedPrice || product.price,
+      image: product.product.images[0]?.url || product.image,
       quantity: 1
     }));
     toast.success('Added to cart!');
@@ -104,7 +102,7 @@ const Wishlist = () => {
                   <div key={product._id} className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
                     <div className="relative">
                       <img
-                        src={product.images[0]?.url || product.image}
+                        src={product.product.images[0]?.url || product.image}
                         alt={product.title}
                         className="w-full h-48 object-cover"
                       />

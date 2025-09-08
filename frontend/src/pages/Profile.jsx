@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import apiService from '../services/api';
+import { setUser } from '../redux/Slices/AuthSlice';
+import { useSelector } from 'react-redux';
+import { getProfile ,updateProfile} from '../services/operations/profileApi';
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const {token} = useSelector((state)=>state.auth);
+  const {user} = useSelector((state)=>state.auth);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,26 +30,9 @@ const Profile = () => {
   }, []);
 
   const fetchProfile = async () => {
-    try {
-      const response = await apiService.getProfile();
-      setUser(response.data);
-      setFormData({
-        name: response.data.name || '',
-        email: response.data.email || '',
-        phone: response.data.phone || '',
-        address: {
-          street: response.data.address?.street || '',
-          city: response.data.address?.city || '',
-          state: response.data.address?.state || '',
-          zipCode: response.data.address?.zipCode || '',
-          country: response.data.address?.country || ''
-        }
-      });
-    } catch (error) {
-      toast.error('Failed to load profile');
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    await getProfile(setFormData,token)
+    setLoading(false);
   };
 
   const handleInputChange = (e) => {
@@ -68,15 +57,13 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUpdating(true);
-    try {
-      await apiService.updateProfile(formData);
-      toast.success('Profile updated successfully');
-      fetchProfile();
-    } catch (error) {
-      toast.error('Failed to update profile');
-    } finally {
-      setUpdating(false);
-    }
+    console.log(formData);
+    await updateProfile(formData,setFormData,token);
+    fetchProfile();
+    console.log("user",user);
+    console.log("user",token);
+    console.log("formData",formData);
+    setUpdating(false);
   };
 
   if (loading) {

@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { FaHeart, FaShoppingCart, FaStar } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import apiService from '../services/api';
+import { checkWishlist } from '../services/operations/wishlistApi';
 
 const Product = ({ post }) => {
   
@@ -12,6 +13,7 @@ const Product = ({ post }) => {
   const dispatch = useDispatch();
   const [isInWishlist, setIsInWishlist] = useState(false);
   const {user}=useSelector((state)=>state.auth);
+  const {token} = useSelector((state)=>state.auth);
 
   useEffect(() => {
     if (user) {
@@ -19,14 +21,10 @@ const Product = ({ post }) => {
     }
   }, [user, post._id]);
 
-  const checkWishlistStatus = async () => {
-    try {
-      const response = await apiService.checkWishlist(post._id);
-      setIsInWishlist(response.inWishlist);
-    } catch (error) {
-      console.error('Error checking wishlist status:', error);
-    }
-  };
+
+  async function checkWishlistStatus(){
+    await checkWishlist(post,token,setIsInWishlist)
+  }
 
   const addToCart = () => {
     if (!user) {
@@ -66,8 +64,8 @@ const Product = ({ post }) => {
   const isInCart = cart.some((p) => p._id === post._id);
 
   return (
-    <div className='flex flex-col justify-center items-center hover:scale-105 transition duration-300 
-    ease-in gap-3 p-4 mt-10 ml-5 rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] hover:shadow-[0px_0px_95px_53px_#00000024] bg-white'>
+    <div className='flex flex-col  justify-center items-center hover:scale-105 transition duration-300 
+    ease-in gap-3 p-4 mt-10 ml-5 rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] hover:shadow-[0px_0px_95px_53px_#00000024]  bg-white'>
       <div className="w-full">
         <p className='text-gray-700 font-semibold text-lg text-left truncate w-full mt-1'>
           {post.title.length > 20 ? post.title.substring(0, 20) + "..." : post.title}
@@ -82,7 +80,7 @@ const Product = ({ post }) => {
         <img 
           src={post.images?.[0]?.url || post.image} 
           alt={post.title} 
-          className='h-full w-full object-cover rounded-lg'
+          className='h-48 w-full object-cover rounded-lg'
         />
       </div>
 
