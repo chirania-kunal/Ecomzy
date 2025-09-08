@@ -92,6 +92,13 @@ app.listen(PORT, () => {
   console.log(`MongoDB URI: ${process.env.MONGODB_URI || 'mongodb://localhost:27017/ecommerce_db'}`);
 });
 
+app.get('/',(req,res)=>{
+    return res.send(200).json({
+      success:true,
+      message: `Ecomzy server is running at ${PORT}`
+    })
+})
+
 connectWithDB();
 
 module.exports = app;
