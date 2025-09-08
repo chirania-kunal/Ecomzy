@@ -7,15 +7,6 @@
 
 > **Ecomzy** is a modern full-stack **e-commerce platform** where users can browse products, manage carts and wishlists, place orders, and make secure payments. Admins can manage products, orders, and users with an intuitive dashboard.  
 
----
-
-## 📸 Screenshots  
-
-> Replace these placeholders with actual app screenshots stored in `/images`.  
-
-![Homepage](images/ecom_home.png)  
-![Product Page](images/ecom_product.png)  
-![Cart Checkout](images/ecom_checkout.png)  
 
 ---
 
