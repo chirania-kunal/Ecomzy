@@ -1,4 +1,4 @@
-# 🛒 ECOMZY — An Online E-Commerce Platform (MERN Stack App)  
+# 🛒 ECOMZY — An Online E-Commerce Platform (MERN Stack App)   [Live Demo](https://ecomzy-topaz.vercel.app)
 
 
 ![Main Page](images/home_page.png)
