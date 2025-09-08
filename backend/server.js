@@ -76,28 +76,27 @@ app.use('/api/v1/wishlist', wishlistRoutes);
 //   });
 // });
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    message: 'Route not found' 
-  });
-});
+// // 404 handler
+// app.use('*', (req, res) => {
+//   res.status(404).json({ 
+//     success: false, 
+//     message: 'Route not found' 
+//   });
+// });
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`MongoDB URI: ${process.env.MONGODB_URI || 'mongodb://localhost:27017/ecommerce_db'}`);
 });
 
-app.get('/',(req,res)=>{
-    return res.send(200).json({
-      success:true,
-      message: `Ecomzy server is running at ${PORT}`
-    })
-})
+app.get("/", (req,res)=>{
+    return res.status(200).json({
+        success : true,
+        message :"Your server is up and running",
+    });
+});
 
 connectWithDB();
 
