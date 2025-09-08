@@ -150,10 +150,10 @@ const Navbar = () => {
             )}
           </div>
         ) : (
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
             <NavLink
               to="/login"
-              className="text-white hover:text-yellow-400 transition-colors"
+              className="text-white hover:text-yellow-400 transition-colors "
             >
               Login
             </NavLink>
